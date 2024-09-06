@@ -1,0 +1,49 @@
+- name: configure backend 
+  hosts: backend
+  become: yes
+  tasks:
+  - name: disable nodejs
+    ansible.builtin.command: dnf module disable nodejs -y
+
+  - name: enable nodejs 20
+    ansible.builtin.command: dnf module enable nodejs:20 -y
+
+  - name: install nodejs
+    ansible.builtin.package:
+     name: nodejs
+     state: present
+
+  - name: install mysql
+    ansible.builtin.package:
+     name: mysql
+     state: present
+
+  - name: create user expense
+    ansible.builtin.user:
+      name: expense
+
+  - name: installing PyMySQL using pip
+    ansible.builtin.pip:
+      name: PyMySQL
+      state: present
+      executable: pip3.9
+
+  - name: installing cryptography using pip
+    ansible.builtin.pip:
+      name: cryptography
+      state: present
+      executable: pip3.9
+
+  - name: remove  a directory
+    ansible.builtin.file:
+      name: /app
+      state: absent
+
+  - name: create  a directory
+    ansible.builtin.file:
+      name: /app
+      state: present
+
+  
+
+   
