@@ -39,12 +39,12 @@
 
   - name: remove  a directory
     ansible.builtin.file:
-      name: /app
+      path: /app
       state: absent
 
   - name: create  a directory
     ansible.builtin.file:
-      name: /app
+      path: /app
       state: directory
 
   - name: download the code
