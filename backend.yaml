@@ -1,6 +1,9 @@
 - name: configure backend 
   hosts: backend
   become: yes
+  vars:
+      login_password: ExpenseApp@1
+      login_host: "mysql.gopi-81s.online"
   tasks:
   - name: disable nodejs
     ansible.builtin.command: dnf module disable nodejs -y
@@ -43,6 +46,43 @@
     ansible.builtin.file:
       name: /app
       state: directory
+
+  - name: download the code
+    ansible.builtin.get_url:
+      url: https://expense-builds.s3.us-east-1.amazonaws.com/expense-backend-v2.zip
+      dest: /tmp/backend.zip
+
+  - name: unzip the code
+    ansible.builtin.unarchive:
+      src: /tmp/backend.zip #by default ansible thinks this is in ansible server
+      dest: /app
+      remote_src: yes
+
+  - name: install dependencies
+    ansible.builtin.command: npm install
+    args: 
+      chdir: /app
+
+  - name: copy the backend service file
+    ansible.builtin.copy:
+      src: backend.service
+      dest: /etc/systemd/system/backend.service
+
+  - name: load database schemas
+    community.mysql.mysql_db:
+      login_user: root
+      login_password: "{{ login_password }}"
+      login_host: "{{ login_host }}"
+      target: /app/schema/backend.sql
+      name: all
+      state: import
+
+  - name: daemon-reload
+    ansible.builtin.systemd_service:
+        daemon_reload: true
+        state: restarted
+        name: backend
+
 
   
 
