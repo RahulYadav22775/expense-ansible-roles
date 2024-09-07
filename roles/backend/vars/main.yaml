@@ -1,3 +1,4 @@
-vars:
     login_password: ExpenseApp@1
     login_host: "mysql.gopi-81s.online"
+    app_location: /app
+    component: backend
