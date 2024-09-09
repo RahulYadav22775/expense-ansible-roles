@@ -12,7 +12,6 @@
       - frontend
   vars_files:
   - /home/ec2-user/credentials.yaml
-    
   tasks:
   - name: installing boto3 and botocore
     ansible.builtin.pip:
