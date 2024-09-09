@@ -3,7 +3,7 @@
   become: yes
   vars_files:
   - /home/ec2-user/credentials.yaml
-  seriel: 1
+  serial: 1
   tasks:
   - name: install nginx
     ansible.builtin.package:
