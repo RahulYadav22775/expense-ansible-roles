@@ -1,6 +1,8 @@
 - name: frontend configure
   hosts: frontend
   become: yes
+  vars_files:
+  - /home/ec2-user/credentials.yaml
   roles:
   - frontend
 
